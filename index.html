@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supercharged Quiz App | Core Java Architecture & Adaptive UI</title>
+    <title>Supercharged Quiz App | Engineering & CS Interview Engine</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,13 +24,13 @@
                 </div>
                 <div>
                     <h1 class="brand-title">Supercharged Quiz Engine</h1>
-                    <p class="brand-subtitle">Core Java 25 Architecture • Adaptive Difficulty • Anti-Cheat Security</p>
+                    <p class="brand-subtitle">Engineering Student & Technical Interview Placement Platform</p>
                 </div>
             </div>
             <div class="header-badges">
-                <span class="badge badge-java">☕ Core Java Engine</span>
-                <span class="badge badge-3d">🧊 3D Array Repository</span>
-                <span class="badge badge-security">🛡️ Anti-Cheat Active</span>
+                <span class="badge badge-java">🎓 Engineering Curriculum</span>
+                <span class="badge badge-3d">🧊 3D Array Matrix</span>
+                <span class="badge badge-security">🛡️ Anti-Cheat Security</span>
             </div>
         </header>
 
@@ -38,40 +38,37 @@
         <main id="view-main-menu" class="view-section active">
             <div class="hero-card">
                 <div class="hero-header">
-                    <span class="hero-chip">PRO EDITION v1.0</span>
-                    <h2>Adaptive Difficulty & Lifeline Quiz Challenge</h2>
-                    <p>Experience an enterprise-grade quiz system that scales difficulty based on your answer streak, enforces single-use lifeline rules, and audits answer speed in real time.</p>
+                    <span class="hero-chip">ENGINEERING EDITION v1.0</span>
+                    <h2>Adaptive Difficulty & Placement Assessment Engine</h2>
+                    <p>Designed for Computer Science & Engineering Students preparing for Campus Placements, GATE, and Tech Interviews. Features dynamic streak difficulty, anti-cheat detection, and zero-repeat random question sampling.</p>
                 </div>
 
                 <div class="config-grid">
                     <div class="form-card">
                         <label for="category-select" class="form-label">
-                            <span>📚 Select Subject Category</span>
-                            <span class="label-hint">3D Array Indexed</span>
+                            <span>📚 Engineering Category</span>
+                            <span class="label-hint">Placement Syllabus</span>
                         </label>
                         <div class="select-wrapper">
                             <select id="category-select" class="form-control">
-                                <option value="-1">🔀 Mixed Categories (All Topics)</option>
-                                <option value="0">☕ Java Programming (OOP & JVM)</option>
-                                <option value="1">🐍 Python Programming (Syntax & Data Structures)</option>
-                                <option value="2">📐 Mathematics (Calculus & Algebra)</option>
-                                <option value="3">🔬 General Science (Physics, Chem & Bio)</option>
-                                <option value="4">🌐 General Knowledge (World & History)</option>
+                                <option value="-1">🔀 Mixed Engineering Subjects (All Topics)</option>
+                                <option value="0">☕ Java & OOP Engineering (JVM, Concurrency, Collections)</option>
+                                <option value="1">🐍 Python & Scripting (Data Structures, GIL, Asyncio)</option>
+                                <option value="2">💻 Data Structures & Algorithms (Trees, Graphs, DP, Searching)</option>
+                                <option value="3">⚙️ Computer Science Core (OS, DBMS, Networks, System Design)</option>
+                                <option value="4">📐 Engineering Mathematics (Matrices, Calculus, Probability)</option>
+                                <option value="5">🌐 General Knowledge & Tech Trends (Cloud, AI/ML, Tech History)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-card">
-                        <label for="question-count" class="form-label">
-                            <span>❓ Session Length</span>
-                            <span class="label-hint">Adaptive Pool</span>
+                        <label for="custom-question-input" class="form-label">
+                            <span>🔢 Custom Question Count</span>
+                            <span class="label-hint">Type any number</span>
                         </label>
-                        <div class="select-wrapper">
-                            <select id="question-count" class="form-control">
-                                <option value="5">5 Questions (Sprint Mode)</option>
-                                <option value="10" selected>10 Questions (Standard Challenge)</option>
-                                <option value="15">15 Questions (Mastery Session)</option>
-                            </select>
+                        <div class="input-wrapper">
+                            <input type="number" id="custom-question-input" class="form-control" min="1" max="100" value="10" placeholder="Enter custom count (e.g. 7, 12, 25)">
                         </div>
                     </div>
                 </div>
@@ -85,10 +82,10 @@
                         </div>
                     </div>
                     <div class="feature-item">
-                        <span class="feat-icon">🆘</span>
+                        <span class="feat-icon">🎲</span>
                         <div>
-                            <strong>Lifeline Protection</strong>
-                            <span>50/50, Skip & Hint Guard</span>
+                            <strong>Zero Repeats</strong>
+                            <span>Random Unasked Question Sampling</span>
                         </div>
                     </div>
                     <div class="feature-item">
@@ -102,7 +99,7 @@
 
                 <div class="menu-actions">
                     <button id="btn-start-quiz" class="btn btn-primary btn-hero">
-                        <span>🎮 Start Interactive Quiz</span>
+                        <span>🎮 Start Assessment Session</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
                     <div class="secondary-actions">
@@ -252,14 +249,14 @@
                         <div class="box-icon">💪</div>
                         <div>
                             <span class="box-label">Strongest Category</span>
-                            <strong id="sum-strongest" class="box-value">Math (90%)</strong>
+                            <strong id="sum-strongest" class="box-value">DSA (90%)</strong>
                         </div>
                     </div>
                     <div class="insight-box box-weak">
                         <div class="box-icon">🎯</div>
                         <div>
                             <span class="box-label">Weakest Category</span>
-                            <strong id="sum-weakest" class="box-value">Science (40%)</strong>
+                            <strong id="sum-weakest" class="box-value">CS Core (40%)</strong>
                         </div>
                     </div>
                 </div>
@@ -399,12 +396,12 @@
                     <p>Questions are indexed via <code>Question[Category][Difficulty][Index]</code>. Scoring 2 consecutive correct answers elevates difficulty (EASY ➔ MEDIUM ➔ HARD). An incorrect answer drops difficulty level down.</p>
                 </div>
                 <div class="rule-group">
-                    <h4>2. Lifeline System & Custom Exception Guard:</h4>
-                    <p>Includes <strong>50/50</strong> (removes 2 wrong choices), <strong>Skip Question</strong> (no penalty), and <strong>Audience Hint</strong>. Attempting to reuse a spent lifeline throws <code>LifelineAlreadyUsedException</code>.</p>
+                    <h4>2. Engineering Curriculum Categories:</h4>
+                    <p>Includes Java & OOP, Python, Data Structures & Algorithms (DSA), Computer Science Core (OS, DBMS, Networks), Engineering Mathematics, and General Tech Knowledge.</p>
                 </div>
                 <div class="rule-group">
-                    <h4>3. Time Attack Speed Bonuses:</h4>
-                    <p>Answering in &le; 5.0s yields +5 pts speed bonus; &le; 10.0s yields +2 pts bonus.</p>
+                    <h4>3. Custom Question Count & Zero Repeats:</h4>
+                    <p>Enter any custom number of questions. Questions are sampled randomly from unasked pools to ensure no repetition.</p>
                 </div>
                 <div class="rule-group">
                     <h4>4. Anti-Cheat Security:</h4>

@@ -81,7 +81,7 @@ public class QuizAppMain {
             }
         } catch (NumberFormatException ignored) {}
 
-        System.out.print("Enter number of questions for this session (default 10): ");
+        System.out.print("Enter custom number of questions for this session (e.g. 7, 14, 25, default 10): ");
         String questionsInput = scanner.nextLine().trim();
         int totalQuestions = 10;
         try {
@@ -98,27 +98,25 @@ public class QuizAppMain {
         System.out.println("==========================================================================");
         System.out.println("1. ADAPTIVE DIFFICULTY:");
         System.out.println("   - Questions stored in a 3D Array: [Category][Difficulty][Index]");
-        System.out.println("   - 2 consecutive correct answers -> Level UP (EASY -> MEDIUM -> HARD)");
-        System.out.println("   - 1 incorrect answer -> Level DOWN & Streak reset");
-        System.out.println("   - Base points scale with difficulty: EASY (10pts), MEDIUM (20pts), HARD (30pts)");
-        System.out.println();
-        System.out.println("2. LIFELINE SYSTEM (Each used once per session):");
-        System.out.println("   - 50/50: Removes 2 wrong answer choices.");
-        System.out.println("   - Skip Question: Advances without score loss.");
-        System.out.println("   - Audience Hint: Gives a helpful clue.");
-        System.out.println("   - Throws custom 'LifelineAlreadyUsedException' if overused!");
-        System.out.println();
-        System.out.println("3. TIME ATTACK & BONUS:");
-        System.out.println("   - Answer within <= 5s: +5 Speed Bonus points");
-        System.out.println("   - Answer within <= 10s: +2 Quick Answer Bonus points");
-        System.out.println();
-        System.out.println("4. ANTI-CHEAT SYSTEM:");
-        System.out.println("   - Answers submitted in < 2.0s trigger custom 'TooFastAnswerException'!");
-        System.out.println();
-        System.out.println("5. PROGRESS TRACKING & EXPORT:");
-        System.out.println("   - Performance tracked per category using HashMap.");
-        System.out.println("   - Highlights Strongest & Weakest categories in formatted Summary Report.");
-        System.out.println("   - Automatically exported to 'quiz_summary_report.txt'.");
-        System.out.println("==========================================================================\n");
+        System.out.println("   - 2 consecutive correct answers => LEVEL UP!");
+        System.out.println("   - 1 incorrect answer => LEVEL DOWN!");
+        System.out.println("2. ENGINEERING CATEGORIES:");
+        System.out.println("   - Java & OOP");
+        System.out.println("   - Python & Scripting");
+        System.out.println("   - Data Structures & Algorithms");
+        System.out.println("   - Computer Science Core (OS, DBMS, Networks)");
+        System.out.println("   - Engineering Mathematics");
+        System.out.println("   - General Knowledge & Tech");
+        System.out.println("3. UNLIMITED CUSTOM QUESTION COUNT & RANDOM UNREPEATED SELECTION:");
+        System.out.println("   - Specify any custom question count (e.g., 5, 12, 30)");
+        System.out.println("   - Questions sampled randomly without repeats within a session.");
+        System.out.println("4. LIFELINES (Each usable ONCE per session):");
+        System.out.println("   - [1] 50/50: Eliminates 2 incorrect options.");
+        System.out.println("   - [2] Skip: Skips current question without penalty.");
+        System.out.println("   - [3] Audience Hint: Displays statistical confidence breakdown.");
+        System.out.println("5. TIME ATTACK & ANTI-CHEAT:");
+        System.out.println("   - Speed bonus: +5s (<5s answer), +2s (<10s answer).");
+        System.out.println("   - Anti-cheat exception thrown if answered under 2.0 seconds.");
+        System.out.println("==========================================================================");
     }
 }

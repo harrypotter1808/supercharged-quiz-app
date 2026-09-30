@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Supercharged Quiz App - Enterprise Web Engine
  * Replicating Core Java OOP Architecture & Features
  */
@@ -11,7 +11,7 @@ const Difficulty = {
 };
 
 // 2. QUESTION BANK (3D Array: [CategoryIndex][DifficultyIndex][QuestionIndex])
-const CATEGORIES = ["Java", "Python", "Math", "Science", "General Knowledge"];
+const CATEGORIES = ["Java & OOP", "Python & Scripting", "Data Structures & Algorithms", "Computer Science Core", "Engineering Mathematics", "General Knowledge & Tech"];
 
 const QUESTION_BANK_3D = [
     // CATEGORY 0: JAVA
@@ -182,7 +182,8 @@ function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
 // 4. QUIZ CONTROLLER
 function startQuiz() {
     state.selectedCategoryIdx = parseInt(document.getElementById('category-select').value);
-    state.totalQuestionsSetting = parseInt(document.getElementById('question-count').value);
+    let customVal = parseInt(document.getElementById('custom-question-input').value);
+    state.totalQuestionsSetting = (isNaN(customVal) || customVal <= 0) ? 10 : customVal;
     state.currentQuestionNum = 0;
     state.currentDifficulty = Difficulty.EASY;
     state.streak = 0;
