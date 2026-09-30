@@ -1,13 +1,13 @@
-/**
- * Supercharged Quiz App - Web Engine
+﻿/**
+ * Supercharged Quiz App - Enterprise Web Engine
  * Replicating Core Java OOP Architecture & Features
  */
 
 // 1. DIFFICULTY ENUM
 const Difficulty = {
-    EASY: { index: 0, name: "Easy", badge: "EASY [???]", points: 10, css: "badge-diff-easy" },
-    MEDIUM: { index: 1, name: "Medium", badge: "MEDIUM [???]", points: 20, css: "badge-diff-medium" },
-    HARD: { index: 2, name: "Hard", badge: "HARD [???]", points: 30, css: "badge-diff-hard" }
+    EASY: { index: 0, name: "Easy", badge: "EASY [★☆☆]", points: 10, css: "badge-easy" },
+    MEDIUM: { index: 1, name: "Medium", badge: "MEDIUM [★★☆]", points: 20, css: "badge-medium" },
+    HARD: { index: 2, name: "Hard", badge: "HARD [★★★]", points: 30, css: "badge-hard" }
 };
 
 // 2. QUESTION BANK (3D Array: [CategoryIndex][DifficultyIndex][QuestionIndex])
@@ -109,7 +109,7 @@ const QUESTION_BANK_3D = [
         // Medium
         [
             { id: "G-M1", text: "What is the capital city of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Brisbane"], correct: 2, hint: "Not Sydney or Melbourne.", exp: "Canberra is Australia's capital." },
-            { id: "G-M2", "text": "In which year did World War II end?", options: ["1943", "1945", "1948", "1950"], correct: 1, hint: "Mid 1940s.", exp: "WWII ended in 1945." },
+            { id: "G-M2", text: "In which year did World War II end?", options: ["1943", "1945", "1948", "1950"], correct: 1, hint: "Mid 1940s.", exp: "WWII ended in 1945." },
             { id: "G-M3", text: "Which element has chemical symbol 'Au'?", options: ["Silver", "Gold", "Copper", "Aluminum"], correct: 1, hint: "From Latin 'Aurum'.", exp: "Gold has symbol Au." }
         ],
         // Hard
@@ -134,8 +134,6 @@ let state = {
     questionStartTime: 0,
     timerInterval: null,
     questionDurationSec: 0,
-    
-    // Progress Tracker (HashMap equivalent)
     categoryStats: {}
 };
 
@@ -153,22 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEventListeners() {
-    // Menu Navigation
     document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
     document.getElementById('btn-mock-runner').addEventListener('click', startMockRunner);
     document.getElementById('btn-view-rules').addEventListener('click', () => showModal('rules-modal'));
     document.getElementById('btn-close-rules').addEventListener('click', () => hideModal('rules-modal'));
 
-    // Lifelines
     document.getElementById('btn-lifeline-5050').addEventListener('click', () => useLifeline('5050'));
     document.getElementById('btn-lifeline-skip').addEventListener('click', () => useLifeline('skip'));
     document.getElementById('btn-lifeline-hint').addEventListener('click', () => useLifeline('hint'));
 
-    // Modals
     document.getElementById('btn-close-hint').addEventListener('click', () => hideModal('hint-modal'));
     document.getElementById('btn-close-exception').addEventListener('click', () => hideModal('exception-modal'));
 
-    // Summary & Mock actions
     document.getElementById('btn-next-question').addEventListener('click', advanceToNextQuestion);
     document.getElementById('btn-download-report').addEventListener('click', downloadSummaryReport);
     document.getElementById('btn-restart-quiz').addEventListener('click', () => switchView('menu'));
@@ -184,7 +178,7 @@ function switchView(viewName) {
 function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-// 4. QUIZ GAMEPLAY CONTROLLER
+// 4. QUIZ CONTROLLER
 function startQuiz() {
     state.selectedCategoryIdx = parseInt(document.getElementById('category-select').value);
     state.totalQuestionsSetting = parseInt(document.getElementById('question-count').value);
@@ -194,7 +188,6 @@ function startQuiz() {
     state.usedLifelines.clear();
     state.categoryStats = {};
 
-    // Reset Lifeline UI
     ['5050', 'skip', 'hint'].forEach(ll => {
         const btn = document.getElementById(`btn-lifeline-${ll}`);
         btn.disabled = false;
@@ -212,13 +205,11 @@ function loadNextQuestion() {
 
     state.currentQuestionNum++;
 
-    // Determine category
     let catIdx = (state.selectedCategoryIdx >= 0) 
         ? state.selectedCategoryIdx 
         : ((state.currentQuestionNum - 1) % CATEGORIES.length);
     let catName = CATEGORIES[catIdx];
 
-    // Fetch from 3D Array [catIdx][diffIdx]
     let diffIdx = state.currentDifficulty.index;
     let questionsPool = QUESTION_BANK_3D[catIdx][diffIdx];
     let qObj = questionsPool[(state.currentQuestionNum - 1) % questionsPool.length];
@@ -226,18 +217,16 @@ function loadNextQuestion() {
     state.activeQuestion = qObj;
     state.activeOptions = [...qObj.options];
 
-    // Update Status Bar
     document.getElementById('quiz-cat-badge').innerText = catName;
     const diffBadge = document.getElementById('quiz-diff-badge');
     diffBadge.innerText = state.currentDifficulty.badge;
-    diffBadge.className = `status-value ${state.currentDifficulty.css}`;
+    diffBadge.className = `pill-value ${state.currentDifficulty.css}`;
 
-    document.getElementById('quiz-streak-badge').innerText = `?? ${state.streak}`;
+    document.getElementById('quiz-streak-badge').innerText = `🔥 ${state.streak}`;
     document.getElementById('quiz-progress-text').innerText = `${state.currentQuestionNum} / ${state.totalQuestionsSetting}`;
 
-    // Update Question Card
     document.getElementById('q-id-tag').innerText = qObj.id;
-    document.getElementById('q-score-potential').innerText = `+${state.currentDifficulty.points} pts potential`;
+    document.getElementById('q-score-potential').innerText = `+${state.currentDifficulty.points} Base Pts`;
     document.getElementById('question-text').innerText = qObj.text;
 
     document.getElementById('explanation-box').classList.add('hidden');
@@ -252,13 +241,13 @@ function renderOptionsGrid() {
 
     state.activeOptions.forEach((optText, i) => {
         const btn = document.createElement('button');
-        btn.className = 'option-btn';
+        btn.className = 'option-card';
         if (optText.startsWith('[Removed')) {
-            btn.classList.add('disabled-fifty');
+            btn.classList.add('disabled-eliminated');
             btn.disabled = true;
         }
 
-        btn.innerHTML = `<span class="option-num">${i + 1})</span> <span>${optText}</span>`;
+        btn.innerHTML = `<span class="opt-index">${i + 1})</span> <span>${optText}</span>`;
         btn.addEventListener('click', () => handleOptionSelection(i));
         grid.appendChild(btn);
     });
@@ -279,7 +268,6 @@ function startTimer() {
         state.questionDurationSec = elapsedSec;
         timerText.innerText = `${elapsedSec.toFixed(1)}s`;
 
-        // Bar decreases over 15s window
         const pct = Math.max(0, 100 - (elapsedSec / 15 * 100));
         timerFill.style.width = `${pct}%`;
     }, 100);
@@ -289,23 +277,21 @@ function stopTimer() {
     clearInterval(state.timerInterval);
 }
 
-// 6. ANSWER SUBMISSION & ADAPTIVE STREAK
+// 6. OPTION SELECTION & STREAK ADAPTABILITY
 function handleOptionSelection(userChoiceIdx) {
     stopTimer();
 
     const durationSec = state.questionDurationSec;
 
-    // Requirement 6: Anti-Cheat System Check (< 2.0s)
     if (durationSec < 2.0) {
         showExceptionModal("TooFastAnswerException", 
-            `?? [ANTI-CHEAT SYSTEM TRIGGERED]\nResponse submitted in ${durationSec.toFixed(2)}s, which is below the 2.0s minimum speed threshold! Flagged for review.`);
+            `⚠️ [ANTI-CHEAT SYSTEM TRIGGERED]\nResponse submitted in ${durationSec.toFixed(2)}s (< 2.0s threshold). Speed audit flag generated.`);
     }
 
     const q = state.activeQuestion;
     const isCorrect = (userChoiceIdx === q.correct);
     const catName = q.category || CATEGORIES[state.selectedCategoryIdx >= 0 ? state.selectedCategoryIdx : ((state.currentQuestionNum - 1) % CATEGORIES.length)];
 
-    // Time Bonus Calculation
     let timeBonus = 0;
     if (isCorrect) {
         if (durationSec <= 5.0) timeBonus = 5;
@@ -315,45 +301,41 @@ function handleOptionSelection(userChoiceIdx) {
     let basePoints = isCorrect ? state.currentDifficulty.points : 0;
     let totalQPoints = basePoints + timeBonus;
 
-    // Record in HashMap
     recordCategoryProgress(catName, isCorrect, totalQPoints, durationSec, timeBonus);
 
-    // Disable all options
-    const optionBtns = document.querySelectorAll('.option-btn');
-    optionBtns.forEach((btn, idx) => {
+    const optionCards = document.querySelectorAll('.option-card');
+    optionCards.forEach((btn, idx) => {
         btn.disabled = true;
-        if (idx === q.correct) btn.classList.add('selected-correct');
-        else if (idx === userChoiceIdx && !isCorrect) btn.classList.add('selected-wrong');
+        if (idx === q.correct) btn.classList.add('correct');
+        else if (idx === userChoiceIdx && !isCorrect) btn.classList.add('wrong');
     });
 
-    // Adaptive Difficulty Adjustment
     let feedbackText = "";
     if (isCorrect) {
         state.streak++;
-        feedbackText = `? CORRECT! +${totalQPoints} pts${timeBonus > 0 ? ` (+${timeBonus}s speed bonus)` : ''}`;
+        feedbackText = `✅ CORRECT! +${totalQPoints} pts${timeBonus > 0 ? ` (+${timeBonus}s speed bonus)` : ''}`;
 
         if (state.streak >= 2 && state.currentDifficulty !== Difficulty.HARD) {
             state.currentDifficulty = (state.currentDifficulty === Difficulty.EASY) ? Difficulty.MEDIUM : Difficulty.HARD;
-            feedbackText += ` | ?? STREAK OF ${state.streak}! Difficulty increased to ${state.currentDifficulty.name}!`;
+            feedbackText += ` | 🔥 STREAK OF ${state.streak}! Difficulty upgraded to ${state.currentDifficulty.name}!`;
             state.streak = 0;
         }
     } else {
         state.streak = 0;
-        feedbackText = `? INCORRECT! Correct answer was: ${q.options[q.correct]}`;
+        feedbackText = `❌ INCORRECT! Correct answer: ${q.options[q.correct]}`;
 
         if (state.currentDifficulty !== Difficulty.EASY) {
             state.currentDifficulty = (state.currentDifficulty === Difficulty.HARD) ? Difficulty.MEDIUM : Difficulty.EASY;
-            feedbackText += ` | ?? Difficulty reduced to ${state.currentDifficulty.name}.`;
+            feedbackText += ` | 📉 Difficulty reduced to ${state.currentDifficulty.name}.`;
         }
     }
 
-    // Show Explanation
     const expBox = document.getElementById('explanation-box');
     const expHeader = document.getElementById('explanation-header');
     const expText = document.getElementById('explanation-text');
 
     expHeader.innerText = feedbackText;
-    expHeader.style.color = isCorrect ? "#10b981" : "#ef4444";
+    expHeader.style.color = isCorrect ? "#34d399" : "#fda4af";
     expText.innerText = `Explanation: ${q.exp}`;
     expBox.classList.remove('hidden');
 }
@@ -362,12 +344,11 @@ function advanceToNextQuestion() {
     loadNextQuestion();
 }
 
-// 7. LIFELINE SYSTEM & CUSTOM EXCEPTIONS
+// 7. LIFELINES & EXCEPTION HANDLING
 function useLifeline(type) {
     if (state.usedLifelines.has(type)) {
-        // Requirement 3: Custom Exception on Lifeline Overuse
         showExceptionModal("LifelineAlreadyUsedException", 
-            `The '${type.toUpperCase()}' lifeline has already been consumed in this quiz session! Only 1 usage permitted per lifeline.`);
+            `The '${type.toUpperCase()}' lifeline has already been consumed in this session! Only 1 usage permitted per lifeline.`);
         return;
     }
 
@@ -392,12 +373,12 @@ function useLifeline(type) {
 }
 
 function showExceptionModal(title, msg) {
-    document.getElementById('exception-title').innerText = `?? ${title}`;
+    document.getElementById('exception-title').innerText = title;
     document.getElementById('exception-message').innerText = msg;
     showModal('exception-modal');
 }
 
-// 8. PROGRESS TRACKING (HashMap Representation)
+// 8. PROGRESS TRACKING (HashMap Model)
 function recordCategoryProgress(category, isCorrect, points, timeSec, timeBonus) {
     if (!state.categoryStats[category]) {
         state.categoryStats[category] = { attempted: 0, correct: 0, points: 0, timeSec: 0, timeBonuses: 0 };
@@ -434,7 +415,6 @@ function finishQuiz() {
     document.getElementById('sum-score').innerText = totalScore;
     document.getElementById('sum-time').innerText = `${totalTimeSec}s`;
 
-    // Strongest & Weakest Category Logic
     let strongest = { cat: "N/A", acc: -1 };
     let weakest = { cat: "N/A", acc: 101 };
 
@@ -448,7 +428,6 @@ function finishQuiz() {
     document.getElementById('sum-strongest').innerText = `${strongest.cat} (${strongest.acc.toFixed(0)}%)`;
     document.getElementById('sum-weakest').innerText = `${weakest.cat} (${weakest.acc.toFixed(0)}%)`;
 
-    // Render Breakdown Table
     const tbody = document.getElementById('breakdown-tbody');
     tbody.innerHTML = '';
     categoriesList.forEach(cat => {
@@ -458,8 +437,8 @@ function finishQuiz() {
         tr.innerHTML = `
             <td><strong>${cat}</strong></td>
             <td>${c.correct} / ${c.attempted}</td>
-            <td>${acc}%</td>
-            <td>${c.points} pts</td>
+            <td><span class="badge ${acc >= 70 ? 'badge-security' : 'badge-java'}">${acc}%</span></td>
+            <td><strong>${c.points} pts</strong></td>
             <td>${Math.round(c.timeSec)}s</td>
         `;
         tbody.appendChild(tr);
@@ -514,7 +493,7 @@ function downloadSummaryReport() {
     URL.revokeObjectURL(url);
 }
 
-// 10. MOCK TEST RUNNER (100 Simulations & Anomaly Detection)
+// 10. MOCK TEST SIMULATOR
 function startMockRunner() {
     switchView('mock');
     document.getElementById('mock-results-card').classList.add('hidden');
@@ -531,11 +510,10 @@ function startMockRunner() {
         attempt++;
         const pct = Math.min(100, attempt);
         progressFill.style.width = `${pct}%`;
-        progressLabel.innerText = `Simulation Progress: ${attempt} / 100 attempts`;
+        progressLabel.innerText = `Executing Batch Simulation: Attempt ${attempt} / 100...`;
         pctLabel.innerText = `${pct}%`;
 
-        // Simulate single attempt
-        let profile = (attempt % 4); // 0=Standard, 1=Genius, 2=Guesser, 3=Bot
+        let profile = (attempt % 4);
         let targetAcc = [0.70, 0.95, 0.25, 0.90][profile];
         let minSpeed = [2.2, 2.5, 2.0, 0.4][profile];
         let maxSpeed = [6.5, 6.0, 7.0, 1.4][profile];
@@ -579,9 +557,9 @@ function displayMockResults(scores, accs, times, sub2s, highspeed, bots) {
     document.getElementById('mock-avg-acc').innerText = `${avgAcc}%`;
     document.getElementById('mock-avg-time').innerText = `${avgTime}s`;
 
-    document.getElementById('anom-sub2s').innerText = `${sub2s} events`;
-    document.getElementById('anom-highscore').innerText = `${highspeed} attempts`;
-    document.getElementById('anom-bots').innerText = `${bots} / 100 attempts (${bots}%)`;
+    document.getElementById('anom-sub2s').innerText = `${sub2s}`;
+    document.getElementById('anom-highscore').innerText = `${highspeed}`;
+    document.getElementById('anom-bots').innerText = `${bots} / 100 (${bots}%)`;
 
     document.getElementById('mock-results-card').classList.remove('hidden');
 }
