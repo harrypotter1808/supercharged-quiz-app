@@ -471,8 +471,16 @@ function finishQuiz() {
         if (acc < weakest.acc) weakest = { cat: cat, acc: acc };
     });
 
-    document.getElementById('sum-strongest').innerText = `${strongest.cat} (${strongest.acc.toFixed(0)}%)`;
-    document.getElementById('sum-weakest').innerText = `${weakest.cat} (${weakest.acc.toFixed(0)}%)`;
+    if (categoriesList.length === 1) {
+        document.getElementById('sum-strongest').innerText = `${strongest.cat} (${strongest.acc.toFixed(0)}%)`;
+        document.getElementById('sum-weakest').innerText = `N/A (Single Subject Quiz)`;
+    } else if (strongest.cat === weakest.cat || strongest.acc === weakest.acc) {
+        document.getElementById('sum-strongest').innerText = `${strongest.cat} (${strongest.acc.toFixed(0)}%)`;
+        document.getElementById('sum-weakest').innerText = `N/A (All subjects tied at ${strongest.acc.toFixed(0)}%)`;
+    } else {
+        document.getElementById('sum-strongest').innerText = `${strongest.cat} (${strongest.acc.toFixed(0)}%)`;
+        document.getElementById('sum-weakest').innerText = `${weakest.cat} (${weakest.acc.toFixed(0)}%)`;
+    }
 
     const tbody = document.getElementById('breakdown-tbody');
     tbody.innerHTML = '';
@@ -513,6 +521,13 @@ function downloadSummaryReport() {
         if (acc < weakest.acc) weakest = { cat: cat, acc: acc };
     });
 
+    let weakestDisplay = `${weakest.cat} (${weakest.acc.toFixed(0)}%)`;
+    if (categoriesList.length === 1) {
+        weakestDisplay = `N/A (Single Subject Quiz)`;
+    } else if (strongest.cat === weakest.cat || strongest.acc === weakest.acc) {
+        weakestDisplay = `N/A (Tied at ${strongest.acc.toFixed(0)}%)`;
+    }
+
     let report = `====================================================\n`;
     report += `                    QUIZ SUMMARY                    \n`;
     report += `====================================================\n`;
@@ -520,7 +535,7 @@ function downloadSummaryReport() {
     report += `Correct Answers: ${totalCorrect}\n`;
     report += `Time Taken:      ${totalTimeSec} seconds\n`;
     report += `Strongest Category: ${strongest.cat} (${strongest.acc.toFixed(0)}%)\n`;
-    report += `Weakest Category:   ${weakest.cat} (${weakest.acc.toFixed(0)}%)\n`;
+    report += `Weakest Category:   ${weakestDisplay}\n`;
     report += `----------------------------------------------------\n`;
     report += `CATEGORY BREAKDOWN:\n`;
     categoriesList.forEach(cat => {
