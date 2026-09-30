@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supercharged Quiz App | Adaptive Difficulty & Lifelines</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-container">
+                <span class="logo-icon">?</span>
+                <div>
+                    <h1>Supercharged Quiz App</h1>
+                    <p class="tagline">Core Java Architecture • Adaptive Difficulty • Anti-Cheat • Lifelines</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-primary">Java OOP Engine</span>
+                <span class="badge badge-accent">3D Array Bank</span>
+                <span class="badge badge-success">Anti-Cheat Active</span>
+            </div>
+        </header>
+
+        <!-- MAIN MENU VIEW -->
+        <main id="view-main-menu" class="view-section active">
+            <div class="hero-card">
+                <h2>Welcome to the Ultimate Quiz Challenge! ??</h2>
+                <p>Test your knowledge with dynamic difficulty scaling, time bonuses, lifelines, and progress tracking per category.</p>
+                
+                <div class="form-group">
+                    <label for="category-select">?? Select Category:</label>
+                    <select id="category-select" class="form-control">
+                        <option value="-1">?? Mixed Categories (All Topics)</option>
+                        <option value="0">? Java Programming</option>
+                        <option value="1">?? Python Programming</option>
+                        <option value="2">?? Mathematics</option>
+                        <option value="3">?? General Science</option>
+                        <option value="4">?? General Knowledge</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="question-count">? Number of Questions:</label>
+                    <select id="question-count" class="form-control">
+                        <option value="5">5 Questions (Quick)</option>
+                        <option value="10" selected>10 Questions (Standard)</option>
+                        <option value="15">15 Questions (Extended)</option>
+                    </select>
+                </div>
+
+                <div class="menu-actions">
+                    <button id="btn-start-quiz" class="btn btn-primary btn-lg">?? Play Interactive Quiz</button>
+                    <button id="btn-mock-runner" class="btn btn-secondary btn-lg">?? Run 100-Attempt Mock Test Runner</button>
+                    <button id="btn-view-rules" class="btn btn-outline btn-lg">?? Rulebook & Lifeline Info</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- QUIZ GAMEPLAY VIEW -->
+        <main id="view-quiz-gameplay" class="view-section">
+            <div class="quiz-status-bar">
+                <div class="status-item">
+                    <span class="status-label">Category</span>
+                    <span id="quiz-cat-badge" class="status-value">Java</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Difficulty</span>
+                    <span id="quiz-diff-badge" class="status-value badge-diff-easy">EASY [???]</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Streak</span>
+                    <span id="quiz-streak-badge" class="status-value streak-value">?? 0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Progress</span>
+                    <span id="quiz-progress-text" class="status-value">1 / 10</span>
+                </div>
+            </div>
+
+            <!-- Time Attack Bar -->
+            <div class="timer-container">
+                <div class="timer-header">
+                    <span>?? Question Timer</span>
+                    <span id="timer-text">0.0s</span>
+                </div>
+                <div class="timer-progress-track">
+                    <div id="timer-progress-bar" class="timer-progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="question-card">
+                <div class="question-meta">
+                    <span id="q-id-tag" class="q-tag">J-E1</span>
+                    <span id="q-score-potential" class="score-tag">+10 pts potential</span>
+                </div>
+                <h3 id="question-text">Loading question text...</h3>
+
+                <div id="options-grid" class="options-grid">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="explanation-box hidden">
+                    <div id="explanation-header" class="explanation-header"></div>
+                    <p id="explanation-text"></p>
+                    <button id="btn-next-question" class="btn btn-primary btn-block margin-top">Next Question ?</button>
+                </div>
+            </div>
+
+            <!-- Lifeline Bar -->
+            <div class="lifeline-container">
+                <div class="lifeline-title">?? Lifelines (Single-Use Guard Active):</div>
+                <div class="lifeline-buttons">
+                    <button id="btn-lifeline-5050" class="btn-lifeline">
+                        <span class="ll-icon">??</span> 50/50
+                    </button>
+                    <button id="btn-lifeline-skip" class="btn-lifeline">
+                        <span class="ll-icon">?</span> Skip Question
+                    </button>
+                    <button id="btn-lifeline-hint" class="btn-lifeline">
+                        <span class="ll-icon">??</span> Audience Hint
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- SUMMARY REPORT VIEW -->
+        <main id="view-summary-report" class="view-section">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h2>QUIZ SUMMARY</h2>
+                    <p>Performance report exported from Java ProgressTracker (HashMap)</p>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-stat-box">
+                        <span class="stat-num" id="sum-total-q">10</span>
+                        <span class="stat-lbl">Total Questions</span>
+                    </div>
+                    <div class="summary-stat-box">
+                        <span class="stat-num" id="sum-correct-q">7</span>
+                        <span class="stat-lbl">Correct Answers</span>
+                    </div>
+                    <div class="summary-stat-box">
+                        <span class="stat-num" id="sum-accuracy">70%</span>
+                        <span class="stat-lbl">Accuracy Rate</span>
+                    </div>
+                    <div class="summary-stat-box">
+                        <span class="stat-num" id="sum-score">85</span>
+                        <span class="stat-lbl">Total Score</span>
+                    </div>
+                    <div class="summary-stat-box">
+                        <span class="stat-num" id="sum-time">45s</span>
+                        <span class="stat-lbl">Time Taken</span>
+                    </div>
+                </div>
+
+                <div class="insights-row">
+                    <div class="insight-card strong">
+                        <span class="insight-icon">??</span>
+                        <div>
+                            <h4>Strongest Category</h4>
+                            <p id="sum-strongest">Math (90%)</p>
+                        </div>
+                    </div>
+                    <div class="insight-card weak">
+                        <span class="insight-icon">??</span>
+                        <div>
+                            <h4>Weakest Category</h4>
+                            <p id="sum-weakest">Science (40%)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="breakdown-section">
+                    <h3>Category Breakdown (HashMap Data):</h3>
+                    <table class="breakdown-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Correct / Total</th>
+                                <th>Accuracy</th>
+                                <th>Score</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="breakdown-tbody">
+                            <!-- Injected -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="report-actions">
+                    <button id="btn-download-report" class="btn btn-success btn-lg">?? Download quiz_summary_report.txt</button>
+                    <button id="btn-restart-quiz" class="btn btn-primary btn-lg">?? Play Again</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- MOCK TEST RUNNER VIEW -->
+        <main id="view-mock-runner" class="view-section">
+            <div class="mock-card">
+                <h2>?? 100-Attempt Mock Test Simulator & Anomaly Detector</h2>
+                <p>Simulating 100 automated quiz sessions across 4 user profiles to evaluate accuracy distributions and trigger anti-cheat anomaly flags.</p>
+
+                <div class="sim-progress-container">
+                    <div class="sim-status">
+                        <span id="sim-progress-label">Simulation Progress: 0 / 100 attempts</span>
+                        <span id="sim-pct-label">0%</span>
+                    </div>
+                    <div class="sim-progress-track">
+                        <div id="sim-progress-fill" class="sim-progress-fill"></div>
+                    </div>
+                </div>
+
+                <div id="mock-results-card" class="mock-results-card hidden">
+                    <h3>?? 100-Quiz Analytics & Anomaly Report</h3>
+                    <div class="summary-grid">
+                        <div class="summary-stat-box">
+                            <span class="stat-num" id="mock-avg-score">155</span>
+                            <span class="stat-lbl">Avg Overall Score</span>
+                        </div>
+                        <div class="summary-stat-box">
+                            <span class="stat-num" id="mock-avg-acc">69.4%</span>
+                            <span class="stat-lbl">Mean Accuracy</span>
+                        </div>
+                        <div class="summary-stat-box">
+                            <span class="stat-num" id="mock-avg-time">30.1s</span>
+                            <span class="stat-lbl">Avg Quiz Time</span>
+                        </div>
+                    </div>
+
+                    <div class="anomaly-box">
+                        <h4>?? ANOMALY & ANTI-CHEAT DETECTION SUMMARY</h4>
+                        <ul>
+                            <li>? Sub-2.0s Speed Violations Caught: <strong id="anom-sub2s">250 events</strong></li>
+                            <li>?? Ultra-Fast High Score Anomalies: <strong id="anom-highscore">19 attempts</strong></li>
+                            <li>?? Flagged Automated Bot Behaviors: <strong id="anom-bots">25 / 100 attempts (25%)</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-actions margin-top">
+                        <button id="btn-re-run-sim" class="btn btn-secondary btn-lg">?? Re-run 100 Simulations</button>
+                        <button id="btn-mock-home" class="btn btn-outline btn-lg">?? Return to Menu</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Hint Modal -->
+    <div id="hint-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>?? Audience Hint</h3>
+            <p id="hint-text">Clue goes here...</p>
+            <button id="btn-close-hint" class="btn btn-primary">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Exception Modal -->
+    <div id="exception-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-error">
+            <h3 id="exception-title">?? LifelineAlreadyUsedException</h3>
+            <p id="exception-message">Exception detail goes here...</p>
+            <button id="btn-close-exception" class="btn btn-primary">Acknowledge</button>
+        </div>
+    </div>
+
+    <!-- Rulebook Modal -->
+    <div id="rules-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-wide">
+            <h3>?? Supercharged Quiz App Rulebook</h3>
+            <div class="rules-body">
+                <h4>1. Adaptive Difficulty (3D Array Bank):</h4>
+                <p>Questions are indexed via <code>Question[Category][Difficulty][Index]</code>. 2 consecutive correct answers elevate difficulty (EASY ? MEDIUM ? HARD). 1 incorrect answer drops difficulty down.</p>
+                
+                <h4>2. Lifeline System:</h4>
+                <p><strong>50/50:</strong> Removes two incorrect options.<br>
+                <strong>Skip Question:</strong> Advances without penalty.<br>
+                <strong>Audience Hint:</strong> Gives a helpful clue.<br>
+                <em>Single-Use Guard: Overused lifelines throw custom LifelineAlreadyUsedException.</em></p>
+
+                <h4>3. Time Attack & Speed Bonuses:</h4>
+                <p>Answering in &le; 5.0s awards +5 pts bonus. &le; 10.0s awards +2 pts bonus.</p>
+
+                <h4>4. Anti-Cheat System:</h4>
+                <p>Responses submitted in &lt; 2.0s trigger <code>TooFastAnswerException</code> and anti-cheat review flags.</p>
+
+                <h4>5. HashMap Progress Tracking & File Export:</h4>
+                <p>Scores are aggregated per category. Produces formatted summary report with Strongest & Weakest categories and exports to <code>quiz_summary_report.txt</code>.</p>
+            </div>
+            <button id="btn-close-rules" class="btn btn-primary margin-top">Close Rulebook</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

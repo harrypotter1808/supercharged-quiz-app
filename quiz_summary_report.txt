@@ -1,0 +1,14 @@
+====================================================
+                    QUIZ SUMMARY                    
+====================================================
+Total Questions: 3
+Correct Answers: 2
+Overall Accuracy: 66.7%
+Total Score:     20 pts (Time Bonus: +0 pts)
+Time Taken:      41 seconds
+Strongest Category: Java (67%)
+Weakest Category:   Java (67%)
+----------------------------------------------------
+CATEGORY BREAKDOWN:
+ - Java              : 2/3 Correct (66.7%) | Score: 20 pts | Time: 41s
+====================================================

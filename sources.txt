@@ -1,0 +1,14 @@
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\QuizAppMain.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\exception\LifelineAlreadyUsedException.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\exception\TooFastAnswerException.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\model\CategoryStats.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\model\Difficulty.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\model\LifelineType.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\model\Question.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\repository\QuestionBank.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\service\AntiCheatService.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\service\LifelineManager.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\service\MockTestRunner.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\service\ProgressTracker.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\service\QuizEngine.java
+C:\Users\admin\Projects\supercharged-quiz-app\src\com\quizapp\util\ReportExporter.java
