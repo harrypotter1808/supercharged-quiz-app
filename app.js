@@ -129,6 +129,7 @@ let state = {
     currentDifficulty: Difficulty.EASY,
     streak: 0,
     usedLifelines: new Set(),
+    askedQuestionIds: new Set(),
     activeQuestion: null,
     activeOptions: [],
     questionStartTime: 0,
@@ -186,6 +187,8 @@ function startQuiz() {
     state.currentDifficulty = Difficulty.EASY;
     state.streak = 0;
     state.usedLifelines.clear();
+    if (!state.askedQuestionIds) state.askedQuestionIds = new Set();
+    state.askedQuestionIds.clear();
     state.categoryStats = {};
 
     ['5050', 'skip', 'hint'].forEach(ll => {
@@ -212,7 +215,21 @@ function loadNextQuestion() {
 
     let diffIdx = state.currentDifficulty.index;
     let questionsPool = QUESTION_BANK_3D[catIdx][diffIdx];
-    let qObj = questionsPool[(state.currentQuestionNum - 1) % questionsPool.length];
+    // Filter unasked questions at target difficulty
+    let pool = questionsPool.filter(q => !state.askedQuestionIds.has(q.id));
+
+    // Fallback if difficulty level pool exhausted
+    if (pool.length === 0) {
+        for (let d = 0; d < 3; d++) {
+            let altPool = QUESTION_BANK_3D[catIdx][d].filter(q => !state.askedQuestionIds.has(q.id));
+            if (altPool.length > 0) { pool = altPool; break; }
+        }
+    }
+    if (pool.length === 0) { pool = questionsPool; }
+
+    let randomIndex = Math.floor(Math.random() * pool.length);
+    let qObj = pool[randomIndex];
+    state.askedQuestionIds.add(qObj.id);
 
     state.activeQuestion = qObj;
     state.activeOptions = [...qObj.options];

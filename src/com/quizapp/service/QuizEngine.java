@@ -23,6 +23,7 @@ public class QuizEngine {
 
     private Difficulty currentDifficulty;
     private int answerStreak;
+    private final Set<String> askedQuestionIds = new HashSet<>();
 
     public QuizEngine() {
         this.questionBank = new QuestionBank();
@@ -31,6 +32,7 @@ public class QuizEngine {
         this.progressTracker = new ProgressTracker();
         this.currentDifficulty = Difficulty.EASY;
         this.answerStreak = 0;
+        this.askedQuestionIds.clear();
     }
 
     public ProgressTracker getProgressTracker() {
@@ -50,6 +52,7 @@ public class QuizEngine {
         progressTracker.reset();
         this.currentDifficulty = Difficulty.EASY;
         this.answerStreak = 0;
+        this.askedQuestionIds.clear();
 
         System.out.println("\n====================================================");
         System.out.println("  STARTING SUPERCHARGED ADAPTIVE QUIZ SESSION");
@@ -76,7 +79,18 @@ public class QuizEngine {
                 availableQuestions = questionBank.getQuestions(categoryIdx, Difficulty.EASY);
             }
 
-            Question currentQuestion = availableQuestions.get(questionsAsked % availableQuestions.size());
+            // Filter unasked questions to prevent repeating questions in the same session
+            List<Question> unasked = new ArrayList<>();
+            for (Question q : availableQuestions) {
+                if (!askedQuestionIds.contains(q.getId())) {
+                    unasked.add(q);
+                }
+            }
+            if (unasked.isEmpty()) {
+                unasked = availableQuestions; // Fallback if pool exhausted
+            }
+            Question currentQuestion = unasked.get(new Random().nextInt(unasked.size()));
+            askedQuestionIds.add(currentQuestion.getId());
 
             questionsAsked++;
 
